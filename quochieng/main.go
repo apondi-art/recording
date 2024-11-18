@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"quochieng/Calculate"
+	"quochieng/quochieng/Calculate"
 )
 
 type Status struct {
@@ -40,6 +40,7 @@ func main() {
 		}
 		switch Action {
 		case "debit":
+
 			remainingAmount = Calculate.Debit(Balance, value)
 		case "credit":
 			if Balance < value {
@@ -53,9 +54,11 @@ func main() {
 			Account:   Account,
 			Remaining: remainingAmount,
 		}
-		fmt.Println(*p)
+		details := fmt.Sprintf("%s %s %v\n", p.Name, p.Account, p.Remaining)
+		os.WriteFile("text.txt", []byte(details), 0o644)
 
 		fmt.Printf("New balance : %v\n", remainingAmount)
+		os.Exit(0)
 
 	}
 }
