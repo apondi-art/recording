@@ -1,1 +1,1 @@
-quinter 123 2000
+quinter 123 600

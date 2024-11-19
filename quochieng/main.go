@@ -9,12 +9,6 @@ import (
 	"quochieng/quochieng/Calculate"
 )
 
-type Status struct {
-	Name      string
-	Account   string
-	Remaining int
-}
-
 func main() {
 	argument := os.Args[1:]
 	if len(argument) != 2 {
@@ -23,6 +17,13 @@ func main() {
 	}
 	for {
 		Balance := 1000
+		data := Calculate.ReadFile()
+		dataStr := strings.Fields(data)
+		if len(dataStr) == 3 {
+			remainBalance, _ := strconv.Atoi(dataStr[2])
+			Balance = remainBalance
+		}
+
 		remainingAmount := 0
 		Action := argument[0]
 		Amount := argument[1]
@@ -49,7 +50,7 @@ func main() {
 			}
 			remainingAmount = Calculate.Credit(Balance, value)
 		}
-		p := &Status{
+		p := &Calculate.Status{
 			Name:      Name,
 			Account:   Account,
 			Remaining: remainingAmount,

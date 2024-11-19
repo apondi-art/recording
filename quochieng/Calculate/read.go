@@ -1,24 +1,37 @@
 package Calculate
 
 import (
-	"bufio"
 	"fmt"
 	"os"
+	"strconv"
+	"strings"
 )
 
-func ReadFile() []string {
-	var final []string
-	data, err := os.Open("text.txt")
+type Status struct {
+	Name      string
+	Account   string
+	Remaining int
+}
+
+func ReadFile() string {
+	var final string
+	file, err := os.ReadFile("text.txt")
 	if err != nil {
 		fmt.Printf("%s", err)
-		return nil
+		return ""
 	}
-	defer data.Close()
-	scanner:=bufio.NewScanner(data)
-	for scanner.Scan(){
-		input:=scanner.Text()
-		final = append(final,input)
-	}
-	return final
+	final = string(file)
 
+	return final
+}
+
+func (val *Status) Update() {
+	data := ReadFile()
+	values := strings.Fields(data)
+
+	balance, err := strconv.Atoi(values[2])
+	if err != nil {
+		fmt.Printf("%s", err)
+	}
+	val.Remaining = balance
 }
