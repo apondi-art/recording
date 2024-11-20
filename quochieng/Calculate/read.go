@@ -3,14 +3,12 @@ package Calculate
 import (
 	"fmt"
 	"os"
-	"strconv"
-	"strings"
 )
 
 type Status struct {
-	Name      string
-	Account   string
-	Remaining int
+	Name    string
+	Account string
+	Balance int
 }
 
 func ReadFile() string {
@@ -23,15 +21,4 @@ func ReadFile() string {
 	final = string(file)
 
 	return final
-}
-
-func (val *Status) Update() {
-	data := ReadFile()
-	values := strings.Fields(data)
-
-	balance, err := strconv.Atoi(values[2])
-	if err != nil {
-		fmt.Printf("%s", err)
-	}
-	val.Remaining = balance
 }

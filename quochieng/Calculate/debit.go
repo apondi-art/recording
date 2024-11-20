@@ -1,5 +1,5 @@
 package Calculate
 
-func Debit(account, amount int) int {
-	return account + amount
+func (c *Status) Debit(amount int) {
+	c.Balance += amount
 }

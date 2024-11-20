@@ -10,21 +10,15 @@ import (
 )
 
 func main() {
+	Calculate.Read()
+	defer Calculate.Save()
+	user := &Calculate.Status{}
 	argument := os.Args[1:]
 	if len(argument) != 2 {
 		fmt.Println(`Usage  go run . credit/Debit Amount`)
 		return
 	}
 	for {
-		Balance := 1000
-		data := Calculate.ReadFile()
-		dataStr := strings.Fields(data)
-		if len(dataStr) == 3 {
-			remainBalance, _ := strconv.Atoi(dataStr[2])
-			Balance = remainBalance
-		}
-
-		remainingAmount := 0
 		Action := argument[0]
 		Amount := argument[1]
 		Action = strings.ToLower(Action)
@@ -39,26 +33,31 @@ func main() {
 			fmt.Printf("%s", err)
 			return
 		}
+
+		key := fmt.Sprintf("%s:%s", Name, Account)
+
+		if _, ok := Calculate.Record[key]; !ok {
+			user.Name = Name
+			user.Account = Account
+			user.Balance = 1000
+			
+
+		} else {
+			user = Calculate.Record[key]
+		}
 		switch Action {
 		case "debit":
 
-			remainingAmount = Calculate.Debit(Balance, value)
+			user.Debit(value)
 		case "credit":
-			if Balance < value {
+			if user.Balance < value {
 				fmt.Println("The balance is less than Amount to be credited")
 				return
 			}
-			remainingAmount = Calculate.Credit(Balance, value)
+			user.Credit(value)
 		}
-		p := &Calculate.Status{
-			Name:      Name,
-			Account:   Account,
-			Remaining: remainingAmount,
-		}
-		details := fmt.Sprintf("%s %s %v\n", p.Name, p.Account, p.Remaining)
-		os.WriteFile("text.txt", []byte(details), 0o644)
-
-		fmt.Printf("New balance : %v\n", remainingAmount)
+		fmt.Printf("balance is  %v", user.Balance)
+		fmt.Println("RECORD: ", Calculate.Record)
 		os.Exit(0)
 
 	}
