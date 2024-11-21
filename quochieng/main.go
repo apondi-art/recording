@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	Calculate.Read() // Load data from JSON into the Record map
+	Calculate.Read()       // Load data from JSON into the Record map
 	defer Calculate.Save() // Ensure data is saved back to JSON on program exit
 
 	// Validate command-line arguments
@@ -52,7 +52,9 @@ func main() {
 				Name:    Name,
 				Account: Account,
 				Balance: 1000,
+				
 			}
+			Calculate.Record[key] = user
 		}
 
 		// Perform the action
@@ -71,7 +73,6 @@ func main() {
 		}
 
 		// Update the Record map
-		Calculate.Record[key] = user
 
 		// Print the updated balance and record
 		fmt.Printf("Updated balance: %v\n", user.Balance)
@@ -79,4 +80,3 @@ func main() {
 		break // Exit the loop after processing one transaction
 	}
 }
-
